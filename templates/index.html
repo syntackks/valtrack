@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}VALTRACK — Look up a player{% endblock %}
+{% block content %}
+
+<header class="masthead">
+  <div class="masthead-mark">VALTRACK</div>
+  <p class="masthead-tag">Look up any VALORANT player's rank and recent matches.</p>
+</header>
+
+<form class="search-bar" action="/player" method="get">
+  <input
+    class="search-input"
+    type="text"
+    name="riot_id"
+    placeholder="Name#Tag  (e.g. Phoenix#1234)"
+    value="{{ request.args.get('riot_id', '') }}"
+    required
+  >
+  <select class="search-select" name="region">
+    {% for code, label in regions %}
+      <option value="{{ code }}" {% if request.args.get('region') == code %}selected{% endif %}>{{ label }}</option>
+    {% endfor %}
+  </select>
+  <button class="search-submit" type="submit">Search</button>
+</form>
+
+{% if error %}
+  <p class="error-banner">{{ error }}</p>
+{% endif %}
+
+<p class="footnote">
+  Data via the community HenrikDev API. Not affiliated with Riot Games.
+</p>
+
+{% endblock %}
